@@ -15,12 +15,10 @@ fn lastElement(list: List) u8 {
 
 pub fn main() !void {
     const stdout = std.io.getStdOut().writer();
-    try stdout.print("Hello, {s}!\n", .{"worlddd"});
-}
-
-test "listTest" {
     var a = List{ .value = 3, .next = null };
-    var b = List{ .value = 3, .next = &a };
+    var b = List{ .value = 4, .next = &a };
 
+    try std.testing.expect(lastElement(a) == 3);
     try std.testing.expect(lastElement(b) == 3);
+    try stdout.print("All tests passed\n", .{});
 }
