@@ -1,0 +1,11 @@
+name: Test
+on: push
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: goto-bus-stop/setup-zig@v2
+      - run: zig fmt --check .
+      - run: ls | grep problem | xargs -I {} bash -c 'cd "{}" && zig build run'
