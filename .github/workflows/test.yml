@@ -8,4 +8,4 @@ jobs:
       - uses: actions/checkout@v2
       - uses: goto-bus-stop/setup-zig@v2
       - run: zig fmt --check .
-      - run: ls | grep problem | xargs -I {} bash -c 'cd "{}" && zig build run'
+      - run: find . -type d -name 'problem*' | xargs -I {} bash -c 'cd "{}" && zig build run'
