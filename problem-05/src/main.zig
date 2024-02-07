@@ -1,19 +1,42 @@
 const std = @import("std");
 
+const List = struct {
+    value: u8,
+    next: ?*List,
+};
+
+fn reverse(list: *List) ?*List {
+    var prev: ?*List = null;
+    var tmp: ?*List = list;
+    var next: ?*List = null;
+
+    while (tmp) |t| {
+        next = t.next;
+        t.next = prev;
+        prev = t;
+        tmp = next;
+    }
+    return prev;
+}
+
+fn print(list: ?*List) void {
+    var tmp = list;
+    while (tmp) |node| {
+        std.debug.print("Value: {}\n", .{node.value});
+        tmp = node.next;
+    }
+}
+
 pub fn main() !void {
     // Prints to stderr (it's a shortcut based on `std.io.getStdErr()`)
-    std.debug.print("All your {s} are belong to us.\n", .{"codebase"});
 
-    // stdout is for the actual output of your application, for example if you
-    // are implementing gzip, then only the compressed bytes should be sent to
-    // stdout, not any debugging messages.
-    const stdout_file = std.io.getStdOut().writer();
-    var bw = std.io.bufferedWriter(stdout_file);
-    const stdout = bw.writer();
+    var a = List{ .value = 3, .next = null };
+    var b = List{ .value = 4, .next = &a };
+    var c = List{ .value = 5, .next = &b };
+    var d = List{ .value = 6, .next = &c };
 
-    try stdout.print("Run `zig build test` to run the tests.\n", .{});
-
-    try bw.flush(); // don't forget to flush!
+    var e = reverse(&d);
+    print(e.?);
 }
 
 test "simple test" {
